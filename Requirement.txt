@@ -1,6 +1,0 @@
-1 fast API
-uvicron
-pydantic
-joblib
-pandas
-scikit-learn

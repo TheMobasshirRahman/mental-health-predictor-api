@@ -7,6 +7,7 @@ import joblib  # pyright: ignore[reportMissingTypeStubs]
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -84,13 +85,22 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",
+        "http://localhost:5173",   # Vite dev server (MindScore AI)
         "http://127.0.0.1:5173",
+        "http://localhost:4173",   # Vite production preview (`vite preview`)
+        "http://127.0.0.1:4173",
     ],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# =========================================================
+# FRONTEND (served same-origin to avoid CORS preflights)
+# =========================================================
+
+frontend_dir = Path(__file__).resolve().parent / "frontend"
+app.mount("/app", StaticFiles(directory=frontend_dir, html=True), name="frontend")
 
 # =========================================================
 # INPUT DATA MODEL

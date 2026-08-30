@@ -4,4 +4,4 @@ uvicorn[standard]==0.27.0
 gunicorn==21.2.0
 pandas
 joblib
-scikit-learn
+scikit-learn==1.6.1

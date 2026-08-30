@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mental Health Predictor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="page">
+    <header class="page__header">
+      <h1>Mental Health Predictor</h1>
+      <p>Estimate a student's mental health score from social media &amp; lifestyle habits.</p>
+    </header>
+
+    <div class="layout">
+
+      <!-- ============ INPUT PANEL ============ -->
+      <section class="panel panel--form" aria-labelledby="form-heading">
+        <h2 id="form-heading" class="panel__title">Student profile</h2>
+
+        <form id="predict-form" class="form">
+          <div class="grid">
+
+            <div class="field">
+              <label for="age">Age (18–24)</label>
+              <input type="number" id="age" min="18" max="24" value="20" required />
+            </div>
+
+            <div class="field">
+              <label for="gender">Gender</label>
+              <select id="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="country">Country</label>
+              <input type="text" id="country" placeholder="e.g. India" value="India" required />
+            </div>
+
+            <div class="field">
+              <label for="academic_level">Academic Level</label>
+              <select id="academic_level" required>
+                <option value="High School">High School</option>
+                <option value="Undergraduate" selected>Undergraduate</option>
+                <option value="Graduate">Graduate</option>
+                <option value="Postgraduate">Postgraduate</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="platform">Most Used Platform</label>
+              <select id="platform" required>
+                <option value="Instagram" selected>Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Snapchat">Snapchat</option>
+                <option value="Twitter">Twitter</option>
+                <option value="YouTube">YouTube</option>
+                <option value="TikTok">TikTok</option>
+                <option value="LINE">LINE</option>
+                <option value="KakaoTalk">KakaoTalk</option>
+                <option value="VKontakte">VKontakte</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="WeChat">WeChat</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="purpose">Purpose of Use</label>
+              <select id="purpose" required>
+                <option value="Entertainment" selected>Entertainment</option>
+                <option value="Networking">Networking</option>
+                <option value="Education">Education</option>
+                <option value="News">News</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="usage_hours">Avg Daily Usage Hours (1–8.8)</label>
+              <input type="number" id="usage_hours" min="1" max="8.8" step="0.1" value="4.5" required />
+            </div>
+
+            <div class="field">
+              <label for="unlocks">Daily Unlocks (62–273)</label>
+              <input type="number" id="unlocks" min="62" max="273" value="150" required />
+            </div>
+
+            <div class="field">
+              <label for="study_hours">Study Hours (0.3–8.3)</label>
+              <input type="number" id="study_hours" min="0.3" max="8.3" step="0.1" value="3" required />
+            </div>
+
+            <div class="field">
+              <label for="activity_hours">Physical Activity Hours (0–4.1)</label>
+              <input type="number" id="activity_hours" min="0" max="4.1" step="0.1" value="1.5" required />
+            </div>
+
+            <div class="field">
+              <label for="sleep_hours">Sleep Hours / Night (3.6–9.9)</label>
+              <input type="number" id="sleep_hours" min="3.6" max="9.9" step="0.1" value="6.5" required />
+            </div>
+
+            <div class="field">
+              <label for="stress">Stress Level</label>
+              <select id="stress" required>
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+                <option value="Very High">Very High</option>
+              </select>
+            </div>
+
+          </div>
+
+          <button type="submit" id="submit-btn">Predict Score</button>
+        </form>
+
+        <p id="error" class="error" hidden></p>
+      </section>
+
+      <!-- ============ DASHBOARD PANEL ============ -->
+      <section class="panel panel--dashboard" aria-labelledby="dashboard-heading">
+        <h2 id="dashboard-heading" class="panel__title">Result dashboard</h2>
+
+        <div id="dashboard-empty" class="empty-state">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 19h16M6 19V9m6 10V5m6 14v-7" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <p>Fill in the profile and press <strong>Predict Score</strong> to see the results here.</p>
+        </div>
+
+        <div id="dashboard-content" class="dashboard" hidden>
+
+          <!-- profile summary chips -->
+          <ul id="profile-chips" class="chips" aria-label="Submitted profile summary"></ul>
+
+          <!-- hero score + status + meter -->
+          <div class="score-card">
+            <div class="score-card__top">
+              <div>
+                <div class="score-card__label">Predicted mental health score</div>
+                <div class="score-card__hero" id="result-score">–</div>
+                <div class="score-card__scale">out of 10</div>
+              </div>
+              <div id="result-badge" class="badge">
+                <span class="badge__icon" id="result-badge-icon" aria-hidden="true"></span>
+                <span class="badge__label" id="result-badge-label">–</span>
+              </div>
+            </div>
+
+            <div class="meter meter--score" role="img" aria-labelledby="result-score">
+              <div class="meter__track">
+                <div class="meter__fill" id="score-meter-fill"></div>
+              </div>
+              <div class="meter__scale">
+                <span>0</span><span>2.5</span><span>5</span><span>7.5</span><span>10</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- lifestyle snapshot -->
+          <div class="snapshot">
+            <div class="snapshot__header">
+              <h3>Lifestyle snapshot</h3>
+              <button type="button" id="table-toggle" class="link-btn" aria-pressed="false">
+                View as table
+              </button>
+            </div>
+            <p class="snapshot__caption">Each bar shows where this input sits within its valid range.</p>
+
+            <ul id="snapshot-list" class="meter-list"></ul>
+
+            <div id="snapshot-table-wrap" class="table-wrap" hidden>
+              <table class="data-table" id="snapshot-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Metric</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Valid range</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
