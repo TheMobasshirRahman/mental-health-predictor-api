@@ -22,7 +22,8 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "-k", "uvicorn.workers.UvicornWorker", "main:app"]
+# Shell form (not exec array) so $PORT expands — hosts like Render inject their own port at runtime.
+CMD gunicorn --bind 0.0.0.0:${PORT:-8000} -k uvicorn.workers.UvicornWorker main:app
 
 
 

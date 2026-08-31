@@ -89,6 +89,7 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:4173",   # Vite production preview (`vite preview`)
         "http://127.0.0.1:4173",
+        "https://themobasshirrahman.github.io",  # MindScore AI on GitHub Pages
     ],
     allow_credentials=False,
     allow_methods=["*"],

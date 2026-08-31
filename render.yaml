@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: mental-health-predictor-api
+    env: docker
+    plan: free
+    healthCheckPath: /health
